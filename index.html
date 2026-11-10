@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A Huang-akta — nyomozás az Nvidia-botrány után</title>
+<meta name="description" content="Pénz, szex, AI, Kína: mi történt Jensen Huang és az Nvidia körül, mit tudunk biztosan, és mit jelent ez a videókártyáknak. Hat nyelv sajtójából összerakva.">
+<link rel="stylesheet" href="case.css">
+</head>
+<body>
+
+<canvas id="helios-canvas" tabindex="-1" aria-hidden="true"></canvas>
+<div class="stage-fallback" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+<div id="labels" aria-hidden="true"></div>
+<div class="progress" id="progress"></div>
+
+<header class="topbar">
+  <span class="rec"><i></i><b>Ügyirat NV-2026/11</b></span>
+  <span>Állapot: nyitott</span>
+  <span class="spacer"></span>
+  <span id="engine-line">Helios motor indul…</span>
+  <button class="btn" id="explore-btn" type="button">Helyszínelés 3D-ben</button>
+</header>
+
+<nav class="chapters" id="chapters" aria-label="Fejezetek"></nav>
+
+<div class="dock" id="dock">
+  <p>Húzd az egeret a körülnézéshez · válassz helyszínt</p>
+</div>
+
+<main>
+
+<!-- ============================== HERO -->
+<section class="hero" id="top" data-cam="hero" data-title="Nyitókép">
+  <div class="hero-in">
+    <span class="stamp">Nem lezárt ügy</span>
+    <h1>A <em>Huang</em>-<br>akta</h1>
+    <p class="sub">Egy házasságtörés, egy szingapúri cég 4,8 milliárd dollárnyi chippel, egy titkos hírszerzési feljegyzés — és a világ egyik legértékesebb vállalata, amelyről most derül ki, mennyire egyetlen emberen áll. Összeraktuk a szálakat.</p>
+    <div class="meta">
+      <span>Lezárva: <b>2026. november 10.</b></span>
+      <span>Források: <b>magyar · angol · kínai · japán · német · francia</b></span>
+      <span>Kiindulópont: <b>444.hu, nov. 9.</b></span>
+    </div>
+    <span class="scrollhint">▼ Görgess a nyomok mentén</span>
+  </div>
+</section>
+
+<!-- ============================== 01 -->
+<section class="left" id="ugy" data-cam="brief" data-title="Az ügy röviden">
+  <div class="panel reveal">
+    <p class="kicker">01 · Az ügy 60 másodpercben</p>
+    <h2>Mi történt?</h2>
+    <p class="lead">November 8-án Jensen Huang, az Nvidia alapító-vezérigazgatója levélben ismerte el a cég dolgozóinak: megcsalta a feleségét. Ugyanaznap az igazgatótanács független vizsgálatot indított.</p>
+    <ul class="clean">
+      <li>A nő a sajtó szerint <b>Alice Huang (Huang Le)</b>, a szingapúri <b>Megaspeed</b> adatközpont-cég volt vezetője. Nem rokonok. Huang a levélben nem nevezte meg.</li>
+      <li>Az amerikai hírszerzés értékelése szerint a nőt a kínai Állambiztonsági Minisztérium szervezte be. Ezt a <i>New York Times</i> írta meg október 29-én, névtelen forrásokra hivatkozva.</li>
+      <li>A Megaspeed két év alatt legalább 4,8 milliárd dollárért vett Nvidia-hardvert. Washington azt gyanítja, hogy a tiltott chipek egy része Kínába került.</li>
+      <li>Vádat eddig senki ellen nem emeltek. Peking és a Megaspeed tagad, az Nvidia szerint nincs jele titoksértésnek.</li>
+    </ul>
+    <div class="stats">
+      <div class="stat"><b>4,8 Mrd $</b><span>Nvidia-hardver a Megaspeed malajziai testvércégénél (2024. jún. – 2026. febr.)</span></div>
+      <div class="stat"><b>−4,27%</b><span>az Nvidia-részvény nov. 9-én, miközben a chipszektor emelkedett</span></div>
+      <div class="stat"><b>3,58%</b><span>ennyi Nvidia-részvénye van Huangnak — nincs szavazati többsége</span></div>
+      <div class="stat"><b>nov. 18.</b><span>zárt kongresszusi meghallgatás, egy nappal a gyorsjelentés után</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== 02 -->
+<section class="scene-cap" data-cam="alice"><div><b>Helyszín 02 · A kapcsolat</b>A magányos oszlop a kártya árnyékában: Alice Huang. A folytonos zöld vonal dokumentált kapcsolatot jelöl, a szaggatott fehér állítást.</div></section>
+<section class="right" id="szereplok" data-cam="alice" data-title="Szereplők">
+  <div class="panel reveal" style="width:min(860px,100%)">
+    <p class="kicker">02 · Személyi lapok</p>
+    <h2>Kik a szereplők?</h2>
+    <div class="cards" id="cards"></div>
+  </div>
+</section>
+
+<!-- ============================== 03 -->
+<section class="scene-cap" data-cam="top"><div><b>Helyszín 03 · Felülnézet</b>Ugyanaz a háló, amit lent a táblán látsz — itt a padlóra feszítve.</div></section>
+<section class="wide" id="halo" data-cam="top" data-title="Kapcsolati háló">
+  <div class="panel reveal">
+    <p class="kicker">03 · A nyomozótábla</p>
+    <h2>Ki kihez kötődik?</h2>
+    <p class="note">Kattints egy szereplőre: megmutatjuk a szálait, és azt is, melyik mennyire bizonyított.</p>
+    <div class="board">
+      <svg id="graph" viewBox="0 0 1000 640" role="group" aria-label="Kapcsolati háló"></svg>
+      <div class="board-info" id="graph-info" aria-live="polite"></div>
+    </div>
+    <div class="legend">
+      <span><i></i>dokumentált vagy az érintett által elismert</span>
+      <span><i class="c"></i>állítás: hírszerzési értékelés, névtelen forrás vagy gyanú</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== 04 -->
+<section class="scene-cap" data-cam="wide"><div><b>Helyszín 04 · Négy év</b>Az exporttilalomtól a beismerő levélig.</div></section>
+<section class="left" id="idovonal" data-cam="wide" data-title="Idővonal">
+  <div class="panel reveal" style="width:min(820px,100%)">
+    <p class="kicker">04 · Kronológia</p>
+    <h2>Hogyan jutottunk idáig?</h2>
+    <div class="tl" id="timeline"></div>
+  </div>
+</section>
+
+<!-- ============================== 05 -->
+<section class="scene-cap" data-cam="mega"><div><b>Helyszín 05 · Megaspeed</b>Szerversorok és egy halom bontatlan doboz. Egy amerikai ellenőr pontosan ilyet látott Malajziában.</div></section>
+<section class="right" id="chipek" data-cam="mega" data-title="A chipek útja">
+  <div class="panel reveal" style="width:min(900px,100%)">
+    <p class="kicker">05 · A pénz és a chipek útja</p>
+    <h2>Mi az a Megaspeed?</h2>
+    <p class="lead">Egy kínai játékcég szingapúri leányából lett Délkelet-Ázsia egyik legnagyobb Nvidia-vevője — öt hónappal az első amerikai chiptilalom után.</p>
+    <div class="flow">
+      <div><small>1 · Eladó</small><b>Nvidia-hardver</b><span>Nagyrészt az Aivres-től, a kínai Inspur kaliforniai leányától vásárolva.</span></div>
+      <div><small>2 · Vevő</small><b>Speedmatrix</b><span>A Megaspeed malajziai cége. Adatközpont Johor államban.</span></div>
+      <div><small>3 · Bérlők</small><b>Távoli számítás</b><span>A kapacitást kínai ügyfelek bérlik, köztük az Alibaba. A távoli bérlés nem azonos az exporttal.</span></div>
+      <div><small>4 · A gyanú</small><b>Kína?</b><span>Amerikai tisztviselők szerint a hardver egy része fizikailag is átkerülhetett. Nem bizonyított.</span></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>5,7 M $</b><span>ennyi készpénze volt a cégnek 2023 végén</span></div>
+      <div class="stat"><b>~2 Mrd $</b><span>Nvidia-termék az első évben, több mint 200 szállítmányban</span></div>
+      <div class="stat"><b>~136 000</b><span>importált Nvidia GPU 2025 novemberéig (Bloomberg)</span></div>
+      <div class="stat"><b>pár ezer</b><span>ennyi legújabb chipet találtak az Nvidia ellenőrei a gépteremben</span></div>
+    </div>
+    <p class="note">A számok a Bloomberg, a New York Times és a kínai Huxiu összesítéséből származnak. <b>A Megaspeed tagadja a jogsértést:</b> közlése szerint sem az amerikai kereskedelmi minisztérium, sem a malajziai hatóság, sem az Nvidia ellenőrzése nem talált szabálytalanságot. Az Nvidia 2025 júniusában leállította az eladást a cégnek; Huang szerint „minden egyes GPU-t megszámoltak”.</p>
+  </div>
+</section>
+
+<!-- ============================== 06 -->
+<section class="scene-cap" data-cam="china"><div><b>Helyszín 06 · Peking</b>A három torony felé csak szaggatott vonal vezet. Ez a fejezet arról szól, miért.</div></section>
+<section class="wide" id="tenyek" data-cam="china" data-title="Tény vagy állítás">
+  <div class="panel reveal">
+    <p class="kicker">06 · Bizonyítékmérleg</p>
+    <h2>Mit tudunk biztosan — és mit nem?</h2>
+    <p class="note">A történet legerősebb állításai névtelen tisztviselőktől származó hírszerzési értékelések. Ezeket nem tudjuk ellenőrizni, ezért külön oszlopba kerültek.</p>
+    <div class="cols">
+      <div class="col">
+        <h3>Megerősítve</h3>
+        <ul>
+          <li>Huang írásban elismerte a hűtlenséget, és bocsánatot kért.</li>
+          <li>Az igazgatótanács független vizsgálatot indított, külső jogászokkal.</li>
+          <li>Három képviselőházi bizottsági elnök zárt meghallgatásra hívta november 18-ra.</li>
+          <li>A Megaspeed az Nvidia partnere és nagy vevője volt; Alice Huang 2023-ban ügyvezető igazgató volt.</li>
+          <li>Kettejükről 2024-es és 2025-ös tajpeji fotók, videók léteznek.</li>
+          <li>Részvényesek csoportos pert indítottak a kapcsolat eltitkolása miatt.</li>
+        </ul>
+      </div>
+      <div class="col c">
+        <h3>Állítás, nem bizonyított</h3>
+        <ul>
+          <li>Alice Huangot a kínai állambiztonság szervezte be, és közvetlenül Pekingnek jelentett.</li>
+          <li>A cél Huang feltérképezése és az exportszabályok lazítása volt.</li>
+          <li>A Megaspeed tiltott chipeket juttatott Kínába.</li>
+          <li>Trumpot már 2025-ben tájékoztatták, de nem lépett.</li>
+          <li>Az Nvidia jogtanácsosának megkeresése után került át a vizsgálat az igazságügyhöz.</li>
+          <li>A nő a Trump-kormány Kína-terveiről is szerezhetett információt.</li>
+        </ul>
+      </div>
+      <div class="col d">
+        <h3>Tagadva vagy nyitott</h3>
+        <ul>
+          <li>Peking: „alaptalan vád, rágalom”. A szingapúri rendőrség kihallgatta, majd elengedte Alice Huangot.</li>
+          <li>Megaspeed: az ellenőrzések nem találtak jogsértést.</li>
+          <li>Nvidia: nincs ok azt hinni, hogy titok vagy nemzetbiztonsági érdek sérült.</li>
+          <li>Nincs nyilvános bizonyíték arra, hogy Huang tudott volna a nő állítólagos szerepéről.</li>
+          <li>Nem tudni, mikor kezdődött és meddig tartott a viszony, és hol van most Alice Huang.</li>
+        </ul>
+      </div>
+    </div>
+    <h3>A másik olvasat</h3>
+    <p>A kínai <i>Huxiu</i> elemzése szerint Alice Huang múltja nem ügynökre, hanem tőkepiaci játékosra vall: a lap kínai cégnyilvántartások alapján azt írja, hogy egy sanghaji befektetőcégnél tőkeáttételes felvásárlásokban vett részt, és mindig a botrány előtt szállt ki. Eszerint ott bukkan fel, ahol szabályozási fal és nagy árrés van. A két magyarázat nem zárja ki egymást, de egyik sincs bíróság előtt bizonyítva.</p>
+  </div>
+</section>
+
+<!-- ============================== 07 -->
+<section class="scene-cap" data-cam="dc"><div><b>Helyszín 07 · Washington</b>Innen egy szaggatott vonal fut Alice Huanghoz: a megfigyelés.</div></section>
+<section class="left" id="washington" data-cam="dc" data-title="Washington">
+  <div class="panel reveal" style="width:min(760px,100%)">
+    <p class="kicker">07 · Ki mit tudott, és mikor?</p>
+    <h2>A washingtoni szál</h2>
+    <p class="lead">A legkínosabb kérdés nem Huangnak szól, hanem a kormánynak: ha tudtak róla, miért nem szóltak neki?</p>
+    <ul class="clean">
+      <li><span class="b b-claim">NYT</span>Alice Huangot nagyjából egy évig figyelték elektronikusan. A lehallgatott anyagban egy amerikai állampolgár tűnt fel; a név feloldása után derült ki, hogy Jensen Huang.</li>
+      <li><span class="b b-claim">NYT</span>Huang nem kapott védelmi eligazítást — vagyis nem figyelmeztették, hogy célpont lehet. A 444 szerint feltehetően azért, hogy ne lepleződjön le a megfigyelés.</li>
+      <li><span class="b b-claim">NYT</span>Trumpot 2025-ben tájékoztatták. 2026 tavaszán, a kínai útja előtt Marco Rubio külügyminiszter felügyeletével titkos feljegyzés készült a kapcsolatról. Huang ennek ellenére az elnöki delegációval utazott.</li>
+      <li><span class="b b-claim">NYT</span>2025 augusztusában Tim Teter, az Nvidia jogtanácsosa megkereste a Megaspeed-ügy nyomozóit. A kereskedelmi minisztérium vizsgálata leállt, az ügy az igazságügyhöz került, ahol büntetőeljárás folyik.</li>
+      <li><span class="b b-fact">tény</span>November 9-én a CIA igazgatója és a nemzeti hírszerzési igazgató zárt ajtók mögött tájékoztatta a kongresszusi vezetőket. Trump szerint az FBI is vizsgálódik.</li>
+      <li><span class="b b-fact">tény</span>Trump kiállt mellette: „Becsületes fickó… valószínűleg van rá magyarázata.” A demokraták szigorúbb chipkorlátozást akarnak, a republikánus Michael McCaul az export azonnali felfüggesztését kérte.</li>
+    </ul>
+    <h3>Miért számít ez?</h3>
+    <p>Huang volt Washingtonban a kínai chipexport lazításának leghangosabb szószólója. Elérte, hogy az Nvidia a kormány 25 százalékos részesedése mellett eladhassa a H200-as chipet kínai vevőknek. Októberben még azt mondta: „Hibát követtünk el, és ezt nehéz visszacsinálni.” Mostantól minden ilyen mondatát a botrányon keresztül olvassák.</p>
+  </div>
+</section>
+
+<!-- ============================== 08 -->
+<section class="scene-cap" data-cam="wall"><div><b>Helyszín 08 · Wall Street</b>Hét zöld oszlop felfelé, három fehér lefelé.</div></section>
+<section class="right" id="piac" data-cam="wall" data-title="A piac">
+  <div class="panel reveal" style="width:min(900px,100%)">
+    <p class="kicker">08 · Pénz</p>
+    <h2>Mit lépett a piac?</h2>
+    <div class="two">
+      <div>
+        <p class="lead">Az Nvidia esett, a versenytársak szárnyaltak. A piac tehát nem az AI-t büntette, hanem az Nvidia vezetői kockázatát.</p>
+        <div class="bars" id="movers"></div>
+        <p class="note">Részvényárfolyamok változása november 9-én (CNBC, Yahoo Finance). Az ASML és a TSMC értéke kerekített.</p>
+      </div>
+      <div>
+        <ul class="clean">
+          <li>Záróár <b>178,67 dollár</b>, április óta a legalacsonyabb. Napon belül 6–8 százalékos mínusz is volt.</li>
+          <li>A <i>Wall Street Journal</i> összesítése szerint az Nvidia bő egy hónap alatt <b>1500 milliárd dollárt</b> veszített az értékéből — ebben a botrány mellett az AI-szektor általános gyengülése is benne van.</li>
+          <li>A félidős választás után a piac már amúgy is félt: a demokrata többség szigorúbb adatközpont-szabályozást hozhat.</li>
+          <li>November 10-én a részvény a nyitás előtt 1,8 százalékot javított.</li>
+        </ul>
+      </div>
+    </div>
+    <h3>Miért „reccsenhet meg a világgazdaság”?</h3>
+    <p>Mert az Nvidia az AI-beruházási hullám közepe: a nagy felhőcégek az ő chipjeire költenek, ő pedig sok vevőjét és partnerét finanszírozza is. A Goldman Sachs szerint az öt legnagyobb felhőszolgáltatónak nagyjából 3200 milliárd dollár olyan kötelezettsége van, amely nem látszik a mérlegében. Ha az Nvidia megbillen, ez a lánc is megfeszül.</p>
+    <p>A hatás egyelőre az Nvidiára korlátozódik. Joachim Klement (Panmure Liberum) szerint akkor terjedne tovább, ha Huang pozíciója veszélybe kerülne, és az Nvidia visszafogná más cégek támogatását.</p>
+    <h3>A hatalmi képlet</h3>
+    <div class="stats">
+      <div class="stat"><b>3,58%</b><span>Huang részesedése; a BlackRocké 7,43%, a Vanguardé 7,31%</span></div>
+      <div class="stat"><b>~60</b><span>vezető jelent közvetlenül neki; nincs kijelölt második ember</span></div>
+      <div class="stat"><b>32. cikk</b><span>az alapszabály szerint az igazgatók többsége indoklás nélkül leválthatja</span></div>
+      <div class="stat"><b>2</b><span>gyermeke dolgozik vezetőként a cégnél</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== 09 -->
+<section class="scene-cap" data-cam="gamers"><div><b>Helyszín 09 · A polc</b>Öt kártya a posztamensen. A legfontosabb kérdés annak, aki nem részvényt, hanem GPU-t venne.</div></section>
+<section class="left" id="gpu" data-cam="gamers" data-title="Videókártyák">
+  <div class="panel reveal" style="width:min(900px,100%)">
+    <p class="kicker">09 · Videókártyák</p>
+    <h2>Olcsóbb lesz ettől a GeForce?</h2>
+    <div class="verdict"><b>Nem.</b> A kártyák árát a memória hajtja fel, nem a botrány. Ez alól egyetlen modell részben kivétel: az RTX 5090.</div>
+    <div class="two">
+      <div>
+        <h3>Ami az árakat tényleg mozgatja</h3>
+        <ul class="clean">
+          <li>Az AI-adatközpontok az idei DRAM-termelés nagyjából 70 százalékát viszik el. A JP Morgan szerint a DRAM ára 2024 óta 400 százalékkal nő 2026 végéig.</li>
+          <li>A GDDR6 azonnali ára gigabájtonként 2,5 dollárról 12,45-re ment egy év alatt (TrendForce).</li>
+          <li>A TechSpot mérése szerint a kártyák átlagára három hónap alatt 35 százalékkal emelkedett.</li>
+          <li>Az SK Hynix vezére szerint 2027 kínálati oldalról „az iparág legrosszabb éve” lesz.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Ahol a botrány mégis beleszól</h3>
+        <ul class="clean">
+          <li><b>RTX 5090:</b> Kínába nem exportálható, ezért csempészik, és AI-kártyává alakítják. Szigorúbb ellenőrzés itt csökkentheti a keresletet — de csak a szélén.</li>
+          <li><b>Kína:</b> Sencsenben a 5090 ára 60 ezer jüan fölötti csúcsról 50 ezer köré esett. A kereskedők nem tartanak a szigorítástól (SCMP).</li>
+          <li><b>Kínálat:</b> ha a kínai eladások leállnak, több adatközponti chip marad amerikai vevőknek (Business Insider). Ez a játékos kártyákon nem segít.</li>
+          <li><b>Ütemterv:</b> egy elhúzódó vizsgálat késleltetheti a döntéseket és a termékbejelentéseket (NH Investment). Erre egyelőre nincs jel.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tablewrap">
+      <table id="gputable" aria-label="GPU-árak az Egyesült Államokban"></table>
+    </div>
+    <p class="note">Ajánlott ár és legolcsóbb amerikai bolti ár, 2026. november eleje (TechSpot). A lista a botrány kirobbanása előtt készült — vagyis a drágulás tőle független. A játékosok hangulata mindenesetre rossz: sokan azt róják fel Huangnak, hogy az Nvidia „AI-infrastruktúra-cégnek” nevezi magát, és a mostani ügyet mémekkel ünneplik.</p>
+  </div>
+</section>
+
+<!-- ============================== 10 -->
+<section class="scene-cap" data-cam="future"><div><b>Helyszín 10 · Távolabbról</b>A kártya áll. A kérdés az, ki tartja.</div></section>
+<section class="wide" id="jovo" data-cam="future" data-title="Forgatókönyvek">
+  <div class="panel reveal">
+    <p class="kicker">10 · Az Nvidia jövője</p>
+    <h2>Három forgatókönyv</h2>
+    <p class="note">Valószínűséget nem írunk melléjük: a kimenet a vizsgálat eredményén múlik, amit ma senki sem ismer. Azt mutatjuk meg, mi szól mellettük és mivel járnának.</p>
+    <div class="scen">
+      <div>
+        <div class="letter">A</div>
+        <h4>Marad, a vizsgálat nem talál semmit</h4>
+        <p>A testület lezárja az ügyet, Huang meggyengült tekintéllyel, de vezet tovább.</p>
+        <ul>
+          <li>A technológiai előny megmarad: Dan Ives szerint az Nvidia két-három évvel jár Kína előtt.</li>
+          <li>A részvényen sokáig rajta marad a „Damoklész kardja”.</li>
+          <li>Videókártyák: semmi nem változik, a memória diktál.</li>
+        </ul>
+        <p class="who">Mellette: Dan Ives („a leváltásáról beszélni komédia”), Patrick Moorhead, Trump, Elon Musk.</p>
+      </div>
+      <div>
+        <div class="letter">B</div>
+        <h4>Marad, de a kínai üzlet elvész</h4>
+        <p>A Kongresszus szigorít, a lobbitőke negatívba fordul.</p>
+        <ul>
+          <li>A H200-as engedélyek és a 25 százalékos alku veszélybe kerülnek.</li>
+          <li>Szigorúbb ellenőrzés a délkelet-ázsiai felhőcégeknél; az FT szerint az Nvidia már korlátozta partnerei kínai ügyleteit.</li>
+          <li>Kína gyorsíthatja a saját chipjeit — pont ettől óvott Huang.</li>
+          <li>Videókártyák: a 5090 D-féle kínai változatok sorsa bizonytalanabb.</li>
+        </ul>
+        <p class="who">Mellette: mindkét párt vizsgálatot akar; McCaul exportstopot kért.</p>
+      </div>
+      <div>
+        <div class="letter">C</div>
+        <h4>Távozik</h4>
+        <p>A vizsgálat súlyos mulasztást talál, vagy a nyomás elviselhetetlenné válik.</p>
+        <ul>
+          <li>Nincs kész utód: a lapos szervezet minden szála Huangnál fut össze.</li>
+          <li>Chris Weston (Pepperstone) szerint ha a piac elhinné, hogy megy, „vérfürdő” lenne.</li>
+          <li>Csúszhatnak a döntések és a bejelentések; az AMD nyerhet figyelmet.</li>
+          <li>Videókártyák: rövid távon semmi, hosszabb távon stratégiai kérdés, mennyire fontos a gaming az új vezetésnek.</li>
+        </ul>
+        <p class="who">Mellette: Gary Black („kétlem, hogy maradhat”); a fogadási piacok már áraznak.</p>
+      </div>
+    </div>
+    <h3>Mit figyelj a következő napokban?</h3>
+    <div class="stats">
+      <div class="stat"><b>nov. 11.</b><span>határidő: elmegy-e Huang a meghallgatásra</span></div>
+      <div class="stat"><b>nov. 17.</b><span>harmadik negyedéves gyorsjelentés — az első nyilvános szereplés</span></div>
+      <div class="stat"><b>nov. 18.</b><span>zárt meghallgatás három bizottság előtt</span></div>
+      <div class="stat"><b>jövő hét</b><span>Trump–Hszi csúcs Kínában; Trump azt mondta, viszi Huangot</span></div>
+      <div class="stat"><b>hó vége</b><span>az Nvidia washingtoni konferenciája</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== 11 -->
+<section class="scene-cap" data-cam="orbit"><div><b>Helyszín 11 · Hat nézőpont</b>Ugyanaz a jelenet máshonnan nézve mást mutat.</div></section>
+<section class="wide" id="nyelvek" data-cam="orbit" data-title="Hat nyelv">
+  <div class="panel reveal">
+    <p class="kicker">11 · Hat nyelv, hat olvasat</p>
+    <h2>Ki hogyan meséli el?</h2>
+    <div class="langs" id="langs"></div>
+  </div>
+</section>
+
+<!-- ============================== 12 -->
+<section class="wide" id="forrasok" data-cam="end" data-title="Források">
+  <div class="panel reveal">
+    <p class="kicker">12 · Iratjegyzék</p>
+    <h2>Források és módszer</h2>
+    <p>Az oldal 2026. november 10-i állapotot rögzít. A <i>New York Times</i>, a <i>Financial Times</i> és a <i>Wall Street Journal</i> eredeti cikkeit nem olvastuk közvetlenül: állításaikat az alább felsorolt, rájuk hivatkozó lapokból vettük át. Ahol a források eltérnek (például hogy a levél belső e-mail volt-e vagy a cég oldalán is megjelent, vagy hogy a bizottsági levél november 4-én vagy 5-én kelt), a többségi változatot használtuk.</p>
+    <p class="note">Fontos: az ügyben senkit nem vádoltak meg. A kémkedésre vonatkozó állítások névtelen forrásokból származó hírszerzési értékelések, amelyeket az érintettek tagadnak.</p>
+    <div class="sources" id="sources"></div>
+    <p class="note" style="margin-top:18px">A háttérben futó 3D-jelenetet a <b>Helios</b> böngészős grafikus motor rendereli WebGPU-n. A jelenet minden eleme a történet egy szereplője; a padlón futó vonalak a 03. fejezet hálóját követik.</p>
+  </div>
+</section>
+
+</main>
+
+<script type="module" src="case.js"></script>
+</body>
+</html>
