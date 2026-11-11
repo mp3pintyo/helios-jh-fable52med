@@ -431,15 +431,20 @@ async function boot() {
   dress(m);
   m.heliosLookAt(...cur.e, ...cur.a);
   H = m;
-  // The first seconds after start-up the GPU is still compiling pipelines and frames stall;
-  // keep the fallback stage up until frames flow steadily.
-  engineLine.textContent = "Helios: a jelenet bemelegszik…";
-  await new Promise((done) => {
-    let run = 0, prev = performance.now();
-    const tick = (t) => { run = t - prev < 120 ? run + 1 : 0; prev = t; run >= 10 ? done() : requestAnimationFrame(tick); };
-    requestAnimationFrame(tick);
-    setTimeout(done, 20000);
-  });
+  // Helios compiles its pipelines in the background: the first image needs only some of them, and
+  // shadows, Lumen and the rest join as theirs arrive. Keep the fallback stage up until the full
+  // image is on the canvas (or, after 30 s, whatever image there is).
+  const started = performance.now();
+  for (;;) {
+    const sh = JSON.parse(m.heliosShaders());
+    const waited = performance.now() - started;
+    if (m.heliosFrames() > 0 && !m.heliosBusy() && (!sh.waiting.length || waited > 30000)) break;
+    if (waited > 60000) throw new Error("a shaderek fordítása nem készült el");
+    engineLine.textContent = `Helios: shaderek fordítása… ${sh.compiled} / ${sh.total}`;
+    await new Promise((r) => setTimeout(r, 200));
+  }
+  // The dressing (lights, fog, materials) reaches the canvas a few frames later.
+  for (const until = m.heliosFrames() + 10; m.heliosFrames() < until && performance.now() - started < 65000;) await new Promise((r) => setTimeout(r, 50));
   document.body.classList.add("engine-on");
   document.addEventListener("visibilitychange", () => m.heliosSetPaused(document.hidden));
   setInterval(() => {
