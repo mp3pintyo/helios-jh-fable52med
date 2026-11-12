@@ -1,12 +1,12 @@
 {
   "engine": "Helios",
   "source": "D:\\AI\\Unreal",
-  "commit": "e68fd582496f35a6da102091554a4108eceb3dc0",
+  "commit": "dfd1e4d93a1bf0ca77aa2b6036f6ccbe33372756",
   "commitDate": "2026-11-12",
-  "dirty": true,
-  "wasmBuilt": "2026-11-12T14:40:08",
-  "wasmSha256": "6cd16d9925ff3ba0a3e331a89db619908747b3dc5b50d63adc1c896d607dc4bc",
-  "synced": "2026-11-12T15:27:32",
+  "dirty": false,
+  "wasmBuilt": "2026-11-12T16:27:54",
+  "wasmSha256": "ee179231f100dc1de8291ba85e072132253263d926ad9dbb7a760a3bf19e2870",
+  "synced": "2026-11-12T16:30:35",
   "api": {
     "heliosLoadScene": "heliosLoadScene(name: string) \u2192 Promise<boolean>",
     "heliosKey": "heliosKey(code: string) \u2192 void",
@@ -59,6 +59,8 @@
   },
   "config": [
     "bakeWorkers",
+    "compileIndicator",
+    "compileView",
     "gi",
     "gltf",
     "gpuBudgetMs",
