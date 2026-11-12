@@ -1,12 +1,12 @@
 {
   "engine": "Helios",
   "source": "D:\\AI\\Unreal",
-  "commit": "db161c499796d3a455024d11bdc03de0ee2559e5",
+  "commit": "e68fd582496f35a6da102091554a4108eceb3dc0",
   "commitDate": "2026-11-12",
-  "dirty": false,
-  "wasmBuilt": "2026-11-12T11:12:42",
-  "wasmSha256": "b7f9a04ee4750af649dd15ccf5739615dc01a0d7c1341c783f6c396f10035021",
-  "synced": "2026-11-12T14:12:11",
+  "dirty": true,
+  "wasmBuilt": "2026-11-12T14:40:08",
+  "wasmSha256": "6cd16d9925ff3ba0a3e331a89db619908747b3dc5b50d63adc1c896d607dc4bc",
+  "synced": "2026-11-12T15:27:32",
   "api": {
     "heliosLoadScene": "heliosLoadScene(name: string) \u2192 Promise<boolean>",
     "heliosKey": "heliosKey(code: string) \u2192 void",
